@@ -18,15 +18,6 @@ function Navbar() {
 
             <li>
               <Link
-                to="/add-task"
-                className="bg-indigo-500 px-4 py-1 rounded-sm"
-              >
-                Add Task
-              </Link>
-            </li>
-
-            <li>
-              <Link
                 to="/"
                 className="bg-red-400 px-4 py-1 rounded-sm"
                 onClick={() => {
