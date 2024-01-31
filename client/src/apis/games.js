@@ -4,7 +4,7 @@ var config = {
   method: 'get',
   url: 'https://v3.football.api-sports.io/leagues',
   headers: {
-    'x-rapidapi-key': 'XxXxXxXxXxXxXxXxXxXxXxXx',
+    'x-rapidapi-key': 'b2f109165027ceabf02f519941ec1c81',
     'x-rapidapi-host': 'v3.football.api-sports.io'
   }
 };

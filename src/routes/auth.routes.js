@@ -1,5 +1,6 @@
 import { Router } from 'express'
-import { login, logout, profile, refresh, register } from '../controllers/auth.controller.js'
+
+import { login, logout, profile, refreshToken, register } from '../controllers/auth.controller.js'
 import { validateSchema } from '../middlewares/validateSchema.js'
 import { loginSchema, registerSchema } from '../schema/auth.schema.js'
 
@@ -11,7 +12,7 @@ router.post('/login', validateSchema(loginSchema), login)
 
 router.post('/logout', logout)
 
-router.get('/refresh', refresh)
+router.get('/token', refreshToken)
 
 router.get('/me', profile)
 

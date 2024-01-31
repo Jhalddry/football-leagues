@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
 
 import './index.css'
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export const App = () => {
   return (
@@ -11,11 +12,17 @@ export const App = () => {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          {/* Public routes */}
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
 
-          <Route path="/*" element={<LoginPage />} />
+          {/* Catch all route */}
+          <Route path="*" element={<LoginPage />} />
+
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<HomePage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
