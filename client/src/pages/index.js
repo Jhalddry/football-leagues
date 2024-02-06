@@ -1,3 +1,3 @@
-export * from './HomePage'
-export * from './LoginPage'
-export * from './RegisterPage'
+export * from './auth';
+export * from './content';
+export * from './HomePage';
