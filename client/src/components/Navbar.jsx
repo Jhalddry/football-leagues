@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useRef, useState } from "react";
 
-
 function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
   const capitalizedUsername = user?.username
@@ -10,24 +9,20 @@ function Navbar() {
     : '';
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    setIsDropdownOpen(prevState => !prevState);
   };
-
   const closeDropdown = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setIsDropdownOpen(false);
     }
   };
-
   useEffect(() => {
     document.addEventListener("mousedown", closeDropdown);
     return () => {
       document.removeEventListener("mousedown", closeDropdown);
     };
   }, []);
-
   return (
     <nav className="bg-zinc-700 my-3 flex flex-col lg:flex-row justify-between py-5 px-5 rounded-lg">
       <div className="flex items-center">
@@ -76,7 +71,7 @@ function Navbar() {
             </li>
             <li>
               <button
-                className="bg-red-400 px-4 py-1 rounded-sm"
+                className="bg-red-400 px-4 py-1 rounded-sm lg:mb-0"
                 onClick={() => {
                   logout();
                 }}
@@ -88,12 +83,12 @@ function Navbar() {
         ) : (
           <>
             <li>
-              <Link to="/login" className="bg-sky-500 px-4 py-1 rounded-md">
+              <Link to="/login" className="bg-sky-500 px-4 py-1 rounded-md lg:mr-2">
                 Login
               </Link>
             </li>
             <li>
-              <Link to="/register" className="bg-sky-500 px-4 py-1 rounded-md">
+              <Link to="/register" className="bg-sky-500 px-4 py-1 rounded-md lg:mr-2">
                 Register
               </Link>
             </li>
@@ -103,5 +98,4 @@ function Navbar() {
     </nav>
   );
 }
-
 export default Navbar;
