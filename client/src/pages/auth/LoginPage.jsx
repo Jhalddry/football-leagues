@@ -39,16 +39,13 @@ export function LoginPage() {
             className="w-full p-2 bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
             placeholder="Email"
           />
-          {errors.email && <p className="text-red-500">Email is required</p>}
+
           <input
             type="password"
             {...register("password", { required: true })}
             className="w-full p-2 bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
             placeholder="Password"
           />
-          {errors.password && (
-            <p className="text-red-500">Password is required</p>
-          )}
 
           <button
             type="submit"

@@ -66,7 +66,10 @@ export const Table = ({ leagueId }) => {
             <tr key={index}>
               <td>{index + 1}</td>
               <td style={{ display: "flex", alignItems: "center" }}>
-                <img src={team.team_logo} style={{ width: "30px", marginRight: "10px" }} />
+                <img
+                  src={team.team_logo}
+                  style={{ width: "30px", marginRight: "10px" }}
+                />
                 {team.standing_team}
               </td>
               <td>{team.standing_P}</td>

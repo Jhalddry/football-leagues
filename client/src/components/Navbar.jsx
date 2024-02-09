@@ -59,6 +59,8 @@ function Navbar() {
                 </li>
               </ul>
             )}
+
+            <Link to="/lives" className="bg-black text-white px-4 py-1 rounded-sm mb-3 lg:mb-0 lg:ml-4">Games</Link>
           </div>
         )}
       </div>
