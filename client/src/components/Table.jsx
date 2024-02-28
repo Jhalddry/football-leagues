@@ -21,7 +21,7 @@ export const Table = ({ leagueId }) => {
     const fetchStandings = async () => {
       try {
         const response = await axios.get(
-          `https://apiv2.allsportsapi.com/football/?&met=Standings&leagueId=${leagueId}&APIkey=5440758df4894053a833f9e362a8de7c66ab237244252e477bb0c3d45b0a1c89`
+          `https://apiv2.allsportsapi.com/football/?&met=Standings&leagueId=${leagueId}&APIkey=a13d9cf438c468d191e00745f373316b3a7681322a22c139ebd26f5d2cad5651`
         );
         setStandings(response.data.result.total);
       } catch (error) {
@@ -42,6 +42,8 @@ export const Table = ({ leagueId }) => {
       return "";
     }
   };
+
+  console.log(standings)
 
   return (
     <div>

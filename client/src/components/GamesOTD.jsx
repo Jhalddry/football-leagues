@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 //!La Liga = 302
 //!Serie A = 207
 
-export function GamesOTD() {
+function GamesOTD() {
   const [games, setGames] = useState([]);
 
   const currentDate = new Date().toISOString().slice(0, 10);
@@ -28,7 +28,7 @@ export function GamesOTD() {
     const fetchGames = async () => {
       try {
         const response = await axios.get(
-          `https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=5440758df4894053a833f9e362a8de7c66ab237244252e477bb0c3d45b0a1c89&from=${currentDate}&to=${currentDate}&timezone=America/Caracas`
+          `https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=a13d9cf438c468d191e00745f373316b3a7681322a22c139ebd26f5d2cad5651&from=${currentDate}&to=${currentDate}&timezone=America/Caracas`
         );
         setGames(response.data.result);
       } catch (error) {

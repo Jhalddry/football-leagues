@@ -6,11 +6,11 @@ function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
   const capitalizedUsername = user?.username
     ? user.username.charAt(0).toUpperCase() + user.username.slice(1)
-    : '';
+    : "";
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const toggleDropdown = () => {
-    setIsDropdownOpen(prevState => !prevState);
+    setIsDropdownOpen((prevState) => !prevState);
   };
   const closeDropdown = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -26,7 +26,9 @@ function Navbar() {
   return (
     <nav className="bg-zinc-700 my-3 flex flex-col lg:flex-row justify-between py-5 px-5 rounded-lg">
       <div className="flex items-center">
-        <h1 className="text-2xl font-bold mb-3 lg:mb-0 lg:mr-5">Practice Project</h1>
+        <h1 className="text-2xl font-bold mb-3 lg:mb-0 lg:mr-5">
+          Practice Project
+        </h1>
         {isAuthenticated && (
           <div ref={dropdownRef} className="relative" style={{ zIndex: 10 }}>
             <button
@@ -36,31 +38,57 @@ function Navbar() {
               Leagues
             </button>
             {isDropdownOpen && (
-              <ul className="absolute right-0 mt-8 bg-zinc-700 p-2 rounded-md shadow-lg" style={{ zIndex: 10 }}>
+              <ul
+                className="absolute right-0 mt-8 bg-zinc-700 p-2 rounded-md shadow-lg"
+                style={{ zIndex: 10 }}
+              >
                 <li>
-                  <Link to="/premier-league" className="block px-4 py-2 hover:bg-gray-800">
+                  <Link
+                    to="/premier-league"
+                    className="block px-4 py-2 hover:bg-gray-800"
+                  >
                     Premier League
                   </Link>
                 </li>
                 <li>
-                  <Link to="/serie-a" className="block px-4 py-2 hover:bg-gray-800">
+                  <Link
+                    to="/serie-a"
+                    className="block px-4 py-2 hover:bg-gray-800"
+                  >
                     Serie A
                   </Link>
                 </li>
                 <li>
-                  <Link to="/la-liga" className="block px-4 py-2 hover:bg-gray-800">
+                  <Link
+                    to="/la-liga"
+                    className="block px-4 py-2 hover:bg-gray-800"
+                  >
                     La Liga
                   </Link>
                 </li>
                 <li>
-                  <Link to="/bundesliga" className="block px-4 py-2 hover:bg-gray-800">
+                  <Link
+                    to="/bundesliga"
+                    className="block px-4 py-2 hover:bg-gray-800"
+                  >
                     Bundesliga
                   </Link>
                 </li>
               </ul>
             )}
 
-            <Link to="/lives" className="bg-black text-white px-4 py-1 rounded-sm mb-3 lg:mb-0 lg:ml-4">Games</Link>
+            <Link
+              to="/games"
+              className="bg-black text-white px-4 py-1 rounded-sm mb-3 lg:mb-0 lg:ml-4"
+            >
+              Games
+            </Link>
+            <Link
+              to="/lives"
+              className="bg-black text-white px-4 py-1 rounded-sm mb-3 lg:mb-0 lg:ml-4"
+            >
+              Lives
+            </Link>
           </div>
         )}
       </div>
@@ -85,12 +113,18 @@ function Navbar() {
         ) : (
           <>
             <li>
-              <Link to="/login" className="bg-sky-500 px-4 py-1 rounded-md lg:mr-2">
+              <Link
+                to="/login"
+                className="bg-sky-500 px-4 py-1 rounded-md lg:mr-2"
+              >
                 Login
               </Link>
             </li>
             <li>
-              <Link to="/register" className="bg-sky-500 px-4 py-1 rounded-md lg:mr-2">
+              <Link
+                to="/register"
+                className="bg-sky-500 px-4 py-1 rounded-md lg:mr-2"
+              >
                 Register
               </Link>
             </li>
