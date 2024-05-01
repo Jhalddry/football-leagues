@@ -1,29 +1,33 @@
-import axios from "axios";
+// import axios from "axios";
 import { useEffect, useState } from "react";
 
 import "../pages/content/styles/table.css";
 
-//! NOMBRE = team.standing_team
-//! ESCUDO = team.team_logo
-//! PUNTOS OBTENIDOS = team.standing_PTS
-//! PARTIDOS JUGADOS = team.standing_P
-//! PARTIDOS GANADOS = team.standing_W
-//! PARTIDOS EMPATADOS = team.standing_D
-//! PARTIDOS PERDIDOS = team.standing_L
-//! GOLES A FAVOR = team.standing_F
-//! GOLES EN CONTRA = team.standing_A
-//! DIFERENCIA DE GOLES = team.standing_GD
-
 export const Table = ({ leagueId }) => {
   const [standings, setStandings] = useState([]);
+  const [league, setLeague] = useState({});
 
   useEffect(() => {
     const fetchStandings = async () => {
       try {
-        const response = await axios.get(
-          `https://apiv2.allsportsapi.com/football/?&met=Standings&leagueId=${leagueId}&APIkey=a13d9cf438c468d191e00745f373316b3a7681322a22c139ebd26f5d2cad5651`
+        const response = await fetch(
+          `https://v3.football.api-sports.io/standings?league=${leagueId}&season=2023`,
+          {
+            method: "GET",
+            headers: {
+              "x-rapidapi-host": "v3.football.api-sports.io",
+              "x-rapidapi-key": "b2f109165027ceabf02f519941ec1c81",
+            },
+          }
         );
-        setStandings(response.data.result.total);
+
+        if (!response.ok) {
+          throw new Error("Error on fetching standings");
+        }
+
+        const data = await response.json();
+        setStandings(data.response[0].league.standings[0]);
+        setLeague(data.response[0].league);
       } catch (error) {
         console.error("An error occurred while fetching standings:", error);
       }
@@ -31,58 +35,53 @@ export const Table = ({ leagueId }) => {
     fetchStandings();
   }, [leagueId]);
 
-  const getTeamType = (team) => {
-    if (team.standing_place_type.includes("Relegation")) {
-      return "Relegation";
-    } else if (team.standing_place_type.includes("Champions League")) {
-      return "Champions League";
-    } else if (team.standing_place_type.includes("Europa League")) {
-      return "Europa League";
-    } else {
-      return "";
-    }
-  };
-
-  console.log(standings)
-
   return (
-    <div>
+    <div className="table-container">
+      <h1>{league.name}</h1>
+      {/* <img src={league.logo} alt={league.name} className="league-logo" />
+      <img src={league.flag} alt={league.name} className="league-flag" /> */}
       <table>
-        <thead>
+        <thead className="table-header">
           <tr>
             <th>Position</th>
             <th>Team</th>
-            <th>Games Played</th>
-            <th>Games Won</th>
-            <th>Games Drawn</th>
-            <th>Games Lost</th>
-            <th>Goals For</th>
-            <th>Goals Against</th>
-            <th>Goal Difference</th>
-            <th>Points</th>
-            <th>Type</th>
+            <th>PTS</th>
+            <th>PL</th>
+            <th>W</th>
+            <th>D</th>
+            <th>L</th>
+            <th>+/-</th>
+            <th>GD</th>
           </tr>
         </thead>
         <tbody>
-          {standings.map((team, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td style={{ display: "flex", alignItems: "center" }}>
+          {standings.map((team) => (
+            <tr
+              key={team.team.id}
+              className={`table-row ${team.rank <= 4 ? "european-team" : ""} ${
+                team.rank === standings.length ? "descending-team" : ""
+              }`}
+            >
+              <td>{team.rank}</td>
+              <td className="team-name">
                 <img
-                  src={team.team_logo}
-                  style={{ width: "30px", marginRight: "10px" }}
+                  src={team.team.logo}
+                  alt={team.team.name}
+                  className="team-logo"
                 />
-                {team.standing_team}
+                {team.team.name}
               </td>
-              <td>{team.standing_P}</td>
-              <td>{team.standing_W}</td>
-              <td>{team.standing_D}</td>
-              <td>{team.standing_L}</td>
-              <td>{team.standing_F}</td>
-              <td>{team.standing_A}</td>
-              <td>{team.standing_GD}</td>
-              <td>{team.standing_PTS}</td>
-              <td>{getTeamType(team)}</td>
+              <td>
+                <strong>{team.points}</strong>
+              </td>
+              <td>{team.all.played}</td>
+              <td>{team.all.win}</td>
+              <td>{team.all.draw}</td>
+              <td>{team.all.lose}</td>
+              <td>
+                {team.all.goals.for} - {team.all.goals.against}
+              </td>
+              <td>{team.goalsDiff}</td>
             </tr>
           ))}
         </tbody>

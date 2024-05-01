@@ -55,3 +55,46 @@ h1 {
   body {
     background-color: #0F3E76;
   }
+
+  .table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .table-header {
+    background-color: #f2f2f2;
+  }
+  
+  .table-header th {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .table-row {
+    background-color: white;
+    padding: 10px;
+  }
+  
+  .table-row td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .team-logo {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .team-name {
+    display: flex;
+    align-items: center;
+  }
+  
+  .european-team {
+    background-color: #f2f2f2;
+  }
+  
+  .descending-team {
+    background-color: #ffcccb;
+  }
