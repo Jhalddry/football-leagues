@@ -1,7 +1,20 @@
-// import axios from "axios";
 import { useEffect, useState } from "react";
+import { IconDraw, IconLoss, IconWin } from "./helpers/Icons";
 
-import "../pages/content/styles/table.css";
+//!standings.team.name
+//!standings.team.logo
+
+//!standings.rank
+//!standings.all.played
+//!standings.points
+//!standings.all.win
+//!standings.all.draw
+//!standings.all.lose
+//!standings.form
+
+//!standings.all.goals.for
+//!standings.all.goals.against
+//!standings.goalsDiff
 
 export const Table = ({ leagueId }) => {
   const [standings, setStandings] = useState([]);
@@ -35,53 +48,111 @@ export const Table = ({ leagueId }) => {
     fetchStandings();
   }, [leagueId]);
 
+  console.log(standings);
+
   return (
-    <div className="table-container">
-      <h1>{league.name}</h1>
-      {/* <img src={league.logo} alt={league.name} className="league-logo" />
-      <img src={league.flag} alt={league.name} className="league-flag" /> */}
-      <table>
-        <thead className="table-header">
+    <div className="flex flex-col items-center justify-center w-full max-w-5xl min-h-screen bg-gray-900 py-10 px-4 rounded-lg overflow-x-auto">
+      <h1 className="text-lg text-gray-400 font-medium">2023-24 Season</h1>
+
+      <table className="min-w-full text-sm text-gray-400 divide-y divide-gray-700">
+        <thead className="bg-gray-800 text-xs uppercase font-medium">
           <tr>
-            <th>Position</th>
-            <th>Team</th>
-            <th>PTS</th>
-            <th>PL</th>
-            <th>W</th>
-            <th>D</th>
-            <th>L</th>
-            <th>+/-</th>
-            <th>GD</th>
+            <th className="w-16"></th>
+
+            <th scope="col" className="px-6 py-3 text-left tracking-wider">
+              Club
+            </th>
+
+            <th scope="col" className="px-6 py-3 text-left tracking-wider">
+              <span className="text-white">MP</span>
+            </th>
+
+            <th scope="col" className="px-6 py-3 text-left tracking-wider">
+              <span className="text-white">W</span>
+            </th>
+
+            <th scope="col" className="px-6 py-3 text-left tracking-wider">
+              <span className="text-white">D</span>
+            </th>
+
+            <th scope="col" className="px-6 py-3 text-left tracking-wider">
+              <span className="text-white">L</span>
+            </th>
+
+            <th scope="col" className="px-6 py-3 text-left tracking-wider">
+              <span className="text-white">GF</span>
+            </th>
+
+            <th scope="col" className="px-6 py-3 text-left tracking-wider">
+              <span className="text-white">GA</span>
+            </th>
+
+            <th scope="col" className="px-6 py-3 text-left tracking-wider">
+              <span className="text-white">GD</span>
+            </th>
+
+            <th scope="col" className="px-6 py-3 text-left tracking-wider">
+              <span className="text-white">Pts</span>
+            </th>
+
+            <th scope="col" className="px-6 py-3 text-left tracking-wider">
+              <span className="text-white">Last 5</span>
+            </th>
           </tr>
         </thead>
-        <tbody>
-          {standings.map((team) => (
-            <tr
-              key={team.team.id}
-              className={`table-row ${team.rank <= 4 ? "european-team" : ""} ${
-                team.rank === standings.length ? "descending-team" : ""
-              }`}
-            >
-              <td>{team.rank}</td>
-              <td className="team-name">
+
+        <tbody className="divide-y divide-gray-700">
+          {standings.map((team, index) => (
+            <tr key={index}>
+              <td className="px-6 py-4 whitespace-nowrap">{team.rank}</td>
+
+              <td className="flex px-6 py-4 whitespace-nowrap">
                 <img
                   src={team.team.logo}
                   alt={team.team.name}
-                  className="team-logo"
+                  className="w-10 h-10 mr-2"
                 />
-                {team.team.name}
+
+                <span className="text-sm">{team.team.name}</span>
               </td>
-              <td>
-                <strong>{team.points}</strong>
+
+              <td className="px-6 py-4 whitespace-nowrap">{team.all.played}</td>
+
+              <td className="px-6 py-4 whitespace-nowrap">{team.all.win}</td>
+
+              <td className="px-6 py-4 whitespace-nowrap">{team.all.draw}</td>
+
+              <td className="px-6 py-4 whitespace-nowrap">{team.all.lose}</td>
+
+              <td className="px-6 py-4 whitespace-nowrap">
+                {team.all.goals.for}
               </td>
-              <td>{team.all.played}</td>
-              <td>{team.all.win}</td>
-              <td>{team.all.draw}</td>
-              <td>{team.all.lose}</td>
-              <td>
-                {team.all.goals.for} - {team.all.goals.against}
+
+              <td className="px-6 py-4 whitespace-nowrap">
+                {team.all.goals.against}
               </td>
-              <td>{team.goalsDiff}</td>
+
+              <td className="px-6 py-4 whitespace-nowrap">{team.goalsDiff}</td>
+
+              <td className="px-6 py-4 whitespace-nowrap">{team.points}</td>
+
+              <td className="px-6 py-4 whitespace-nowrap flex flex-row items-center">
+                {team.form.split("").map((result, index) => {
+                  switch (result) {
+                    case "W":
+                      return <IconWin key={index} />;
+
+                    case "D":
+                      return <IconDraw key={index} />;
+
+                    case "L":
+                      return <IconLoss key={index} />;
+
+                    default:
+                      return <span key={index}>?</span>;
+                  }
+                })}
+              </td>
             </tr>
           ))}
         </tbody>

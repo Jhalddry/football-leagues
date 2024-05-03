@@ -1,52 +1,38 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-
-//! LIVEGAMES
-//!Resultado = event_final_result
-//!Equipo Local = event_home_team
-//!Equipo local logo = home_team_logo
-//!Equipo Visitante = event_away_team
-//!Equipo visitante logo = away_team_logo
-//!Competicion = league_name
-//!Competicion logo = league_logo
-//!Estadio = event_stadium
-//!Tiempo transcurrido = event_status
-//!Hora de inicio = event_time
-
-//!Leagues
-//!Bundesliga = 175
-//!Premier League = 152
-//!La Liga = 302
-//!Serie A = 207
 
 function GamesOTD() {
   const [games, setGames] = useState([]);
 
-  const currentDate = new Date().toISOString().slice(0, 10);
+  // const currentDate = new Date().toISOString().slice(0, 10);
 
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await axios.get(
-          `https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=a13d9cf438c468d191e00745f373316b3a7681322a22c139ebd26f5d2cad5651&from=${currentDate}&to=${currentDate}&timezone=America/Caracas`
+        const response = await fetch(
+          `https://v3.football.api-sports.io/fixtures?`,
+          {
+            method: "GET",
+            headers: {
+              "x-rapidapi-host": "v3.football.api-sports.io",
+              "x-rapidapi-key": "b2f109165027ceabf02f519941ec1c81",
+            },
+          }
         );
-        setGames(response.data.result);
+        const data = await response.json();
+        setGames(data.response);
       } catch (error) {
         console.error("An error occurred while fetching live games:", error);
       }
     };
     fetchGames();
-  }, [currentDate]);
+  }, []);
 
-  let importantGames = games.filter((game) =>
-    [175, 152, 302, 207].includes(game.league_key)
-  );
+  console.log(games);
 
   return (
     <div className="width: 400px;">
       <h1>Games of the Day</h1>
-
-      {importantGames.slice(0, 15).map((game, index) => (
+      {/* {games.slice(0, 15).map((game, index) => (
         <div
           key={game.id}
           className={`margin-bottom: 20px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); ${
@@ -62,7 +48,7 @@ function GamesOTD() {
                     alt={game.event_home_team}
                     className="h-10 w-10 mr-2"
                   />
-                  <span>{game.event_home_team}</span>
+                  <span>{game.event_home_team}</span>s
                 </div>
                 <div className="flex items-center">
                   <span>{game.event_final_result}</span>
@@ -98,7 +84,7 @@ function GamesOTD() {
             </div>
           </div>
         </div>
-      ))}
+      ))} */}
     </div>
   );
 }

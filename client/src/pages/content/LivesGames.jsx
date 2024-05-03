@@ -1,29 +1,40 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 
 function LivesGames() {
+  const [lives, setLives] = useState([]);
 
-    const [lives, setLives] = useState([]);
-
-    useEffect(() => {
-        const fetchGames = async () => {
-          try {
-            const response = await axios.get(
-              `https://apiv2.allsportsapi.com/football/?met=Livescore&APIkey=5440758df4894053a833f9e362a8de7c66ab237244252e477bb0c3d45b0a1c89`
-            );
-            setLives(response.data.result);
-          } catch (error) {
-            console.error("An error occurred while fetching live games:", error);
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const response = await fetch(
+          "https://v3.football.api-sports.io/fixtures?live=all",
+          {
+            method: "GET",
+            headers: {
+              "x-rapidapi-host": "v3.football.api-sports.io",
+              "x-rapidapi-key": "b2f109165027ceabf02f519941ec1c81",
+            },
           }
-        };
-        fetchGames();
-      }, []);
+        );
+        const data = await response.json();
+        setLives(data.response);
+      } catch (error) {
+        console.error("An error occurred while fetching live games:", error);
+      }
+    };
+    fetchGames();
+  }, []);
 
-    return (
-        <div>
-            <h1>Lives Games</h1>
-        </div>
-    );
+  console.log(lives);
+
+  return (
+    <div>
+      <h1>Lives Games</h1>
+    </div>
+  );
 }
 
 export default LivesGames;
+
+/*
+*/
