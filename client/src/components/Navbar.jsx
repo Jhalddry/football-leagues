@@ -1,137 +1,192 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useRef, useState } from "react";
+import { MenuIcon, XIcon } from "@heroicons/react/solid";
 
 function Navbar() {
-  const { isAuthenticated, logout, user } = useAuth();
-  const capitalizedUsername = user?.username
-    ? user.username.charAt(0).toUpperCase() + user.username.slice(1)
-    : "";
+  const { isAuthenticated, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const toggleDropdown = () => {
-    setIsDropdownOpen((prevState) => !prevState);
+    setIsDropdownOpen((prevState) =>!prevState);
   };
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prevState) =>!prevState);
+  };
+
   const closeDropdown = (e) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+    if (dropdownRef.current &&!dropdownRef.current.contains(e.target)) {
       setIsDropdownOpen(false);
     }
   };
+
+  const closeSidebar = (e) => {
+    if (e.target === e.currentTarget) {
+      setIsSidebarOpen(false);
+    }
+  };
+
   useEffect(() => {
     document.addEventListener("mousedown", closeDropdown);
+    document.addEventListener("mousedown", closeSidebar);
     return () => {
       document.removeEventListener("mousedown", closeDropdown);
+      document.removeEventListener("mousedown", closeSidebar);
     };
   }, []);
-  return (
-    <nav className="bg-zinc-700 my-3 flex flex-col lg:flex-row justify-between py-5 px-5 rounded-lg">
-      <div className="flex items-center">
-        <h1 className="text-2xl font-bold mb-3 lg:mb-0 lg:mr-5">
-          Practice Project
-        </h1>
-        {isAuthenticated && (
-          <div ref={dropdownRef} className="relative" style={{ zIndex: 10 }}>
-            <button
-              className="bg-black text-white px-4 py-1 rounded-sm mb-3 lg:mb-0 lg:ml-4"
-              onClick={toggleDropdown}
-            >
-              Leagues
-            </button>
-            {isDropdownOpen && (
-              <ul
-                className="absolute right-0 mt-8 bg-zinc-700 p-2 rounded-md shadow-lg"
-                style={{ zIndex: 10 }}
-              >
-                <li>
-                  <Link
-                    to="/premier-league"
-                    className="block px-4 py-2 hover:bg-gray-800"
-                  >
-                    Premier League
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/serie-a"
-                    className="block px-4 py-2 hover:bg-gray-800"
-                  >
-                    Serie A
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/la-liga"
-                    className="block px-4 py-2 hover:bg-gray-800"
-                  >
-                    La Liga
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/bundesliga"
-                    className="block px-4 py-2 hover:bg-gray-800"
-                  >
-                    Bundesliga
-                  </Link>
-                </li>
-              </ul>
-            )}
 
-            <Link
-              to="/games"
-              className="bg-black text-white px-4 py-1 rounded-sm mb-3 lg:mb-0 lg:ml-4"
+  return (
+    <nav className="bg-gray-800 py-5 px-5 rounded-lg">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-white">Football App</h1>
+        <div className="flex items-center gap-x-4">
+          {isAuthenticated && (
+            <button
+              className="text-white text-lg font-semibold hover:underline"
+              onClick={toggleSidebar}
             >
-              Games
-            </Link>
-            <Link
-              to="/lives"
-              className="bg-black text-white px-4 py-1 rounded-sm mb-3 lg:mb-0 lg:ml-4"
-            >
-              Lives
-            </Link>
-          </div>
-        )}
-      </div>
-      <ul className="flex flex-col lg:flex-row gap-y-2 lg:gap-y-0 items-center">
-        {isAuthenticated ? (
-          <>
-            <li className="text-lg px-4 font-bold">
-              {" "}
-              Welcome {capitalizedUsername}!
-            </li>
-            <li>
+              <MenuIcon className="h-6 w-6" />
+            </button>
+          )}
+          <Link
+            to="/"
+            className="text-white text-lg font-semibold hover:underline"
+          >
+            Home
+          </Link>
+          {isAuthenticated && (
+            <>
+              <Link
+                to="/profile"
+                className="text-white text-lg font-semibold hover:underline"
+              >
+                Profile
+              </Link>
               <button
-                className="bg-red-400 px-4 py-1 rounded-sm lg:mb-0"
-                onClick={() => {
-                  logout();
-                }}
+                className="text-white text-lg font-semibold hover:underline"
+                onClick={logout}
               >
                 Logout
               </button>
-            </li>
-          </>
-        ) : (
-          <>
-            <li>
+            </>
+          )}
+          {!isAuthenticated && (
+            <>
               <Link
                 to="/login"
-                className="bg-sky-500 px-4 py-1 rounded-md lg:mr-2"
+                className="text-white text-lg font-semibold hover:underline"
               >
                 Login
               </Link>
-            </li>
-            <li>
               <Link
                 to="/register"
-                className="bg-sky-500 px-4 py-1 rounded-md lg:mr-2"
+                className="text-white text-lg font-semibold hover:underline"
               >
                 Register
               </Link>
-            </li>
-          </>
-        )}
-      </ul>
+            </>
+          )}
+        </div>
+      </div>
+      {isAuthenticated && (
+        <div
+          className={`absolute top-0 left-0 w-64 h-full bg-gray-800 p-5 pt-16 transition-transform duration-300 transform ${
+            isSidebarOpen? "translate-x-0" : "-translate-x-full"
+          }`}
+          onClick={closeSidebar}
+        >
+          <button
+            className="absolute top-0 right-0 mt-5 mr-5 text-white text-lg font-semibold hover:underline"
+            onClick={toggleSidebar}
+          >
+            <XIcon className="h-6 w-6" />
+          </button>
+          <div className="mt-10">
+            <Link
+              to="/premier-league"
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+Premier League
+            </Link>
+            <Link
+              to="/serie-a"
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Serie A
+            </Link>
+            <Link
+              to="/la-liga"
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              La Liga
+            </Link>
+            <Link
+              to="/bundesliga"
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Bundesliga
+            </Link>
+          </div>
+          <Link
+            to="/games"
+            className="block px-4 py-2 hover:bg-gray-700 mt-10"
+          >
+            Games
+          </Link>
+        </div>
+      )}
+      {isAuthenticated && (
+        <div
+          className={`absolute top-0 left-0 w-64 h-full bg-gray-800 p-5 pt-16 transition-transform duration-300 transform ${
+            isDropdownOpen? "translate-x-0" : "-translate-x-full"
+          }`}
+          ref={dropdownRef}
+        >
+          <button
+            className="absolute top-0 right-0 mt-5 mr-5 text-white text-lg font-semibold hover:underline"
+            onClick={toggleDropdown}
+          >
+            <XIcon className="h-6 w-6" />
+          </button>
+          <div className="mt-10">
+            <Link
+              to="/premier-league"
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Premier League
+            </Link>
+            <Link
+              to="/serie-a"
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Serie A
+            </Link>
+            <Link
+              to="/la-liga"
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              La Liga
+            </Link>
+            <Link
+              to="/bundesliga"
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Bundesliga
+            </Link>
+          </div>
+          <Link
+            to="/games"
+            className="block px-4 py-2 hover:bg-gray-700 mt-10"
+          >
+            Games
+          </Link>
+        </div>
+      )}
     </nav>
   );
 }
+
 export default Navbar;

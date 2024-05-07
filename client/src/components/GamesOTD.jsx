@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 function GamesOTD() {
   const [games, setGames] = useState([]);
 
-  // const currentDate = new Date().toISOString().slice(0, 10);
+  const currentDate = new Date().toISOString().slice(0, 10);
 
   useEffect(() => {
     const fetchGames = async () => {
       try {
         const response = await fetch(
-          `https://v3.football.api-sports.io/fixtures?`,
+          `https://v3.football.api-sports.io/fixtures?date=${currentDate}`,
           {
             method: "GET",
             headers: {
@@ -25,66 +25,100 @@ function GamesOTD() {
       }
     };
     fetchGames();
-  }, []);
+  }, [currentDate]);
 
-  console.log(games);
+  if (!games) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="width: 400px;">
-      <h1>Games of the Day</h1>
-      {/* {games.slice(0, 15).map((game, index) => (
-        <div
-          key={game.id}
-          className={`margin-bottom: 20px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); ${
-            index !== 0 ? "margin-top: 20px;" : ""
-          }`}
-        >
-          <div className="bg-black shadow-md rounded-lg p-4 text-white">
-            <div className="flex flex-col">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
+    <div className="bg-gray-800 rounded-lg shadow-md p-4">
+      <h2 className="text-2xl font-bold mb-4 text-white">Live Games</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {games.length > 0 &&
+          games
+            .filter((game) => {
+              const allowedLeagueIds = ["135", "39", "140", "78", "61", "129", "1", "2", "3", "4", "5", "848", "9", "11", "13", "34"];
+              return allowedLeagueIds.includes(game.league.id.toString());
+            })
+            .map((game) => (
+              <div
+                key={game.fixture.id}
+                className="bg-gray-900 p-4 rounded-lg shadow-md flex flex-col"
+              >
+                <div className="flex items-center mb-2">
                   <img
-                    src={game.home_team_logo}
-                    alt={game.event_home_team}
-                    className="h-10 w-10 mr-2"
+                    src={game.league.logo}
+                    alt={game.league.name}
+                    className="w-8 h-8 mr-2"
                   />
-                  <span>{game.event_home_team}</span>s
+                  <p className="text-lg font-bold text-white">
+                    {game.league.name}
+                  </p>
+                </div>
+                <div className="flex items-center mb-2">
+                  <div className="w-8 h-8 mr-2">
+                    <img
+                      src={game.teams.home.logo}
+                      alt={game.teams.home.name}
+                      className="w-full h-full rounded-full"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="text-lg font-bold text-white">
+                      {game.teams.home.name}
+                    </p>
+                    {game.fixture.status.short === "NS" ||
+                    game.fixture.status.short === "PT" ? (
+                      <p className="text-lg font-bold text-white">vs</p>
+                    ) : (
+                      <p className="text-lg font-bold text-white">
+                        {game.goals.home} - {game.goals.away}
+                      </p>
+                    )}
+                  </div>
+                  <div className="w-8 h-8 ml-2">
+                    <img
+                      src={game.teams.away.logo}
+                      alt={game.teams.away.name}
+                      className="w-full h-full rounded-full"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="text-lg font-bold text-white">
+                      {game.teams.away.name}
+                    </p>
+                    {game.fixture.status.short === "NS" ||
+                    game.fixture.status.short === "PT" ? (
+                      <p className="text-lg font-bold text-white">vs</p>
+                    ) : (
+                      <p className="text-lg font-bold text-white">
+                        {game.goals.away} - {game.goals.home}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center mb-2">
+                  <p className="text-lg font-bold text-white">
+                    {game.fixture.venue.name}
+                  </p>
                 </div>
                 <div className="flex items-center">
-                  <span>{game.event_final_result}</span>
-                </div>
-                <div className="flex items-center">
-                  <img
-                    src={game.away_team_logo}
-                    alt={game.event_away_team}
-                    className="h-10 w-10 ml-2"
-                  />
-                  <span>{game.event_away_team}</span>
+                  <p className="text-lg font-bold text-white">
+                    {new Date(game.fixture.date).toLocaleString()}
+                  </p>
+                  <span className="text-lg mx-2">-</span>
+                  <p className="text-lg font-bold text-white">
+                    {game.fixture.status.short === "NS"
+                      ? "Not Started"
+                      : game.fixture.status.short === "FT"
+                      ? "Full Time"
+                      : `${game.fixture.status.elapsed}' ${game.fixture.status.short}`}
+                  </p>
                 </div>
               </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <span>Stadium: {game.event_stadium}</span>
-                </div>
-                <div>
-                  <span>Competition: {game.league_name}</span>
-                  <img
-                    src={game.league_logo}
-                    alt={game.league_name}
-                    className="h-5 w-5"
-                  />
-                </div>
-                <div>
-                  <span>Start Date: {game.event_time}</span>
-                </div>
-              </div>
-              <div>
-                <span>Time Elapsed: {game.event_live}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))} */}
+            ))}
+      </div>
     </div>
   );
 }

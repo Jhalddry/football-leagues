@@ -7,7 +7,6 @@ import './index.css'
 import ProtectedRoute from "./components/ProtectedRoute";
 import { HomePage } from "./pages/HomePage";
 import GamesOTD from "./components/GamesOTD";
-import LivesGames from "./pages/content/LivesGames";
 
 export const App = () => {
   return (
@@ -31,7 +30,6 @@ export const App = () => {
             <Route path="/bundesliga" element={<BundesTable />} />
             <Route path="/serie-a" element={<SerieATable />} />
             <Route path="/games" element={<GamesOTD />} />
-            <Route path="/lives" element={<LivesGames />} />
           </Route>
         </Routes>
       </BrowserRouter>

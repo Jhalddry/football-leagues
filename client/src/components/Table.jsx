@@ -16,6 +16,9 @@ import { IconDraw, IconLoss, IconWin } from "./helpers/Icons";
 //!standings.all.goals.against
 //!standings.goalsDiff
 
+//!league.logo
+//!league.name
+
 export const Table = ({ leagueId }) => {
   const [standings, setStandings] = useState([]);
   const [league, setLeague] = useState({});
@@ -48,115 +51,122 @@ export const Table = ({ leagueId }) => {
     fetchStandings();
   }, [leagueId]);
 
-  console.log(standings);
-
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-5xl min-h-screen bg-gray-900 py-10 px-4 rounded-lg overflow-x-auto">
-      <h1 className="text-lg text-gray-400 font-medium">2023-24 Season</h1>
+    <div className="flex flex-col items-center justify-center w-full max-w-3xl min-h-screen py-10 px-4">
+      <div className="flex items-center justify-center mb-8">
+        <img src={league.logo} alt={league.name} className="w-16 h-16 mr-4" />
+        <h1 className="text-2xl text-white font-semibold">{league.name}</h1>
+      </div>
 
-      <table className="min-w-full text-sm text-gray-400 divide-y divide-gray-700">
-        <thead className="bg-gray-800 text-xs uppercase font-medium">
-          <tr>
-            <th className="w-16"></th>
+      <div className="w-1/2 mx-auto">
+        <table className="min-w-full text-sm text-gray-400 divide-y divide-gray-700 bg-gray-900 rounded-lg overflow-hidden">
+          <thead className="bg-gray-800 text-xs uppercase font-medium">
+            <tr>
+              <th className="w-16"></th>
 
-            <th scope="col" className="px-6 py-3 text-left tracking-wider">
-              Club
-            </th>
+              <th scope="col" className="px-6 py-3 text-left tracking-wider">
+                Club
+              </th>
 
-            <th scope="col" className="px-6 py-3 text-left tracking-wider">
-              <span className="text-white">MP</span>
-            </th>
+              <th scope="col" className="px-6 py-3 text-left tracking-wider">
+                <span className="text-white">MP</span>
+              </th>
 
-            <th scope="col" className="px-6 py-3 text-left tracking-wider">
-              <span className="text-white">W</span>
-            </th>
+              <th scope="col" className="px-6 py-3 text-left tracking-wider">
+                <span className="text-white">W</span>
+              </th>
 
-            <th scope="col" className="px-6 py-3 text-left tracking-wider">
-              <span className="text-white">D</span>
-            </th>
+              <th scope="col" className="px-6 py-3 text-left tracking-wider">
+                <span className="text-white">D</span>
+              </th>
 
-            <th scope="col" className="px-6 py-3 text-left tracking-wider">
-              <span className="text-white">L</span>
-            </th>
+              <th scope="col" className="px-6 py-3 text-left tracking-wider">
+                <span className="text-white">L</span>
+              </th>
 
-            <th scope="col" className="px-6 py-3 text-left tracking-wider">
-              <span className="text-white">GF</span>
-            </th>
+              <th scope="col" className="px-6 py-3 text-left tracking-wider">
+                <span className="text-white">GF</span>
+              </th>
 
-            <th scope="col" className="px-6 py-3 text-left tracking-wider">
-              <span className="text-white">GA</span>
-            </th>
+              <th scope="col" className="px-6 py-3 text-left tracking-wider">
+                <span className="text-white">GA</span>
+              </th>
 
-            <th scope="col" className="px-6 py-3 text-left tracking-wider">
-              <span className="text-white">GD</span>
-            </th>
+              <th scope="col" className="px-6 py-3 text-left tracking-wider">
+                <span className="text-white">GD</span>
+              </th>
 
-            <th scope="col" className="px-6 py-3 text-left tracking-wider">
-              <span className="text-white">Pts</span>
-            </th>
+              <th scope="col" className="px-6 py-3 text-left tracking-wider">
+                <span className="text-white">Pts</span>
+              </th>
 
-            <th scope="col" className="px-6 py-3 text-left tracking-wider">
-              <span className="text-white">Last 5</span>
-            </th>
-          </tr>
-        </thead>
-
-        <tbody className="divide-y divide-gray-700">
-          {standings.map((team, index) => (
-            <tr key={index}>
-              <td className="px-6 py-4 whitespace-nowrap">{team.rank}</td>
-
-              <td className="flex px-6 py-4 whitespace-nowrap">
-                <img
-                  src={team.team.logo}
-                  alt={team.team.name}
-                  className="w-10 h-10 mr-2"
-                />
-
-                <span className="text-sm">{team.team.name}</span>
-              </td>
-
-              <td className="px-6 py-4 whitespace-nowrap">{team.all.played}</td>
-
-              <td className="px-6 py-4 whitespace-nowrap">{team.all.win}</td>
-
-              <td className="px-6 py-4 whitespace-nowrap">{team.all.draw}</td>
-
-              <td className="px-6 py-4 whitespace-nowrap">{team.all.lose}</td>
-
-              <td className="px-6 py-4 whitespace-nowrap">
-                {team.all.goals.for}
-              </td>
-
-              <td className="px-6 py-4 whitespace-nowrap">
-                {team.all.goals.against}
-              </td>
-
-              <td className="px-6 py-4 whitespace-nowrap">{team.goalsDiff}</td>
-
-              <td className="px-6 py-4 whitespace-nowrap">{team.points}</td>
-
-              <td className="px-6 py-4 whitespace-nowrap flex flex-row items-center">
-                {team.form.split("").map((result, index) => {
-                  switch (result) {
-                    case "W":
-                      return <IconWin key={index} />;
-
-                    case "D":
-                      return <IconDraw key={index} />;
-
-                    case "L":
-                      return <IconLoss key={index} />;
-
-                    default:
-                      return <span key={index}>?</span>;
-                  }
-                })}
-              </td>
+              <th scope="col" className="px-6 py-3 text-left tracking-wider">
+                <span className="text-white">Last 5</span>
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody className="divide-y divide-gray-700">
+            {standings.map((team, index) => (
+              <tr key={index}>
+                <td className="px-6 py-4 whitespace-nowrap">{team.rank}</td>
+
+                <td className="flex px-6 py-4 whitespace-nowrap">
+                  <img
+                    src={team.team.logo}
+                    alt="logo"
+                    className="w-10 h-10 mr-2"
+                  />
+
+                  <span className="text-sm">{team.team.name}</span>
+                </td>
+
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {team.all.played}
+                </td>
+
+                <td className="px-6 py-4 whitespace-nowrap">{team.all.win}</td>
+
+                <td className="px-6 py-4 whitespace-nowrap">{team.all.draw}</td>
+
+                <td className="px-6 py-4 whitespace-nowrap">{team.all.lose}</td>
+
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {team.all.goals.for}
+                </td>
+
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {team.all.goals.against}
+                </td>
+
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {team.goalsDiff}
+                </td>
+
+                <td className="px-6 py-4 whitespace-nowrap">{team.points}</td>
+
+                <td className="px-6 py-4 whitespace-nowrap flex flex-row items-center">
+                  {team.form.split("").map((result, index) => {
+                    switch (result) {
+                      case "W":
+                        return <IconWin key={index} className="text-2xl" />;
+
+                      case "D":
+                        return <IconDraw key={index} className="text-2xl" />;
+
+                      case "L":
+                        return <IconLoss key={index} className="text-2xl" />;
+
+                      default:
+                        return <span key={index}>?</span>;
+                    }
+                  })}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
